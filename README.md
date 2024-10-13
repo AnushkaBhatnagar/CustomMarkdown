@@ -17,7 +17,7 @@ This is a compiler project to translate a Custom Markdown language to its HTML a
 | LBrace | Left Brace for Attributes    | `{`   |
 | RBrace  |  Right Brace for Attributes    | `}`   |
 
-## Set Up
+## Installation and Set Up
 
 1. Clone the Repository
    ```
