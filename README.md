@@ -2,6 +2,8 @@
 
 This is a compiler project to translate a Custom Markdown language to its HTML and Bootstrap CSS equivalent. The compiler has been designed in C++.
 
+Project By: Anushka Bhatnagar (UNI: ab5920)
+
 ## Lexical Analyser
 The Lexical Grammar for the language consists of the following token classes:
 
