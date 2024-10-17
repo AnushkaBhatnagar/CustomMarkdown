@@ -5,6 +5,18 @@ This is a compiler project to translate a Custom Markdown language to its HTML a
 Project By: Anushka Bhatnagar (UNI: ab5920)
 
 ## Lexical Analyser
+Lexical Grammar Rules:
+1. Different levels of headings can be classified from h1-h4 using #, ##, ###, ####
+2. Tag name begins with @ symbol.
+3. Class name is enclosed within [ and ]
+4. Attributes are enclosed within { and }
+5. Text is enclosed within " and "
+6. Different operators symbolize different meanings
+   - `>` symboizes paragraph tag
+   - `**` symbolizes bold
+   - `*` symbolizes italics
+   - `?` symbolizes form input
+
 The Lexical Grammar for the language consists of the following token classes:
 
 | Token Class | Description | Example |
@@ -27,7 +39,10 @@ The Lexical Grammar for the language consists of the following token classes:
    git clone https://github.com/AnushkaBhatnagar/CustomMarkdown
    ```
 2. Navigate to the project folder
-3. Install g++
+   ```
+   cd CustomMarkdown
+   ```
+4. Install g++
    - On Ubuntu/Debian
      ```
      sudo apt update
@@ -44,16 +59,12 @@ The Lexical Grammar for the language consists of the following token classes:
 
 ## Running the Lexical Analyser
 
-- Using the Shell Script
+An input.txt file is present with sample code. The lexical analyser can be run using the Shell Script as follows:
+
   ```
-  ./run_lexer.sh
+  ./run_lexer.sh input.txt
   ```
-  **OR**
-- Manual Compilation and Execution
-  ```
-  g++ lexer.cpp -o lexer_program
-  ./lexer_program
-  ```
+
 ## Error Handling and Recovery
 
 The designed lexical analyser is using **Panic Mode** as a mechanism for error handling, wherein, if characters which are invalid in the language are detected, the lexer classifies them as "Unknown" and discards them until a token with a clear role is found.
