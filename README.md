@@ -16,6 +16,7 @@ Lexical Grammar Rules:
    - `**` symbolizes bold
    - `*` symbolizes italics
    - `?` symbolizes form input
+   - `!!` symbolizes alert
 
 The Lexical Grammar for the language consists of the following token classes:
 
