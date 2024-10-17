@@ -1,22 +1,30 @@
 #!/bin/bash
 
-# Check if g++ is installed
-if ! command -v g++ &> /dev/null
-then
-    echo "g++ could not be found. Please install g++."
-    exit
+# Check if the user has provided a filename as an argument
+if [ $# -ne 1 ]; then
+    echo "Usage: ./run_lexer.sh <input_file>"
+    exit 1
 fi
 
-# Compile the lexer.cpp file
+INPUT_FILE=$1
+
+# Check if the input file exists
+if [ ! -f "$INPUT_FILE" ]; then
+    echo "Error: File '$INPUT_FILE' not found!"
+    exit 1
+fi
+
+# Compile the C++ code
 echo "Compiling lexer.cpp..."
-g++ lexer.cpp -o lexer_program
+g++ lexer.cpp -o lexer
 
 # Check if the compilation was successful
-if [ $? -eq 0 ]; then
-    echo "Compilation successful."
-    # Run the lexer program
-    echo "Executing lexer_program..."
-    ./lexer_program
-else
-    echo "Compilation failed. Please check the source code for errors."
+if [ $? -ne 0 ]; then
+    echo "Compilation failed!"
+    exit 1
 fi
+
+echo "Compilation successful. Running the lexer..."
+
+# Run the lexer with the provided input file
+./lexer "$INPUT_FILE"

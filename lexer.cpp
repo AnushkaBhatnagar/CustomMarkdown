@@ -1,7 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <cctype>
+using namespace std;
 
 enum class TokenType {
     Operator,
@@ -21,6 +23,18 @@ struct Token {
     TokenType type;
     std::string value;
 };
+
+string readFile(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error: Could not open the file " << filename << endl;
+        exit(1);
+    }
+
+    string content((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+    file.close();
+    return content;
+}
 
 class Lexer {
 public:
@@ -164,10 +178,16 @@ private:
     size_t pos;
 };
 
-int main() {
-    std::string input;
-    std::cout << "Enter custom markdown: ";
-    std::getline(std::cin, input);
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        cerr << "Usage: " << argv[0] << " <input_file>" << endl;
+        return 1;
+    }
+
+    string input = readFile(argv[1]);
+
+    // Now input contains the entire content of the file
+    cout << "Input read from file:\n" << input << endl;
 
     Lexer lexer(input);
     Token token;
