@@ -4,7 +4,7 @@ This is a compiler project to translate a Custom Markdown language to its HTML a
 
 Project By: Anushka Bhatnagar (UNI: ab5920)
 
-## Phase 1: Lexical Analyser
+# Phase 1: Lexical Analyser
 **Lexical Grammar Rules:**
 1. Different levels of headings can be classified from h1-h4 using #, ##, ###, ####
 2. Tag name begins with @ symbol.
@@ -74,7 +74,7 @@ The designed lexical analyser is using **Panic Mode** as a mechanism for error h
 
 Error Recovery entails skipping ahead to the next character and continuing parsing the input as per the rules of the designed language.
 
-## Phase 2: Syntax Parser
+# Phase 2: Syntax Parser
 **Context Free Grammar:**
 
 - Document → ElementList EOF
