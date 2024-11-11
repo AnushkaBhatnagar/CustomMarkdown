@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
+
 using namespace std;
 
 enum class TokenType {
@@ -16,6 +17,7 @@ enum class TokenType {
     RightBrace,
     Text,
     Header,
+    LexerError,
     EndOfFile,
 };
 
@@ -62,7 +64,7 @@ public:
                 if (header.length() <= 4) {
                     return {TokenType::Header, header};
                 } else {
-                    std::cerr << "Invalid header size: " << header.length() << std::endl;
+                    logError("Invalid header size: " + header);
                 }
             }
 
@@ -70,7 +72,7 @@ public:
             if (current == '*' || current == '-' || current == '>' || current == '!' || current == '?' || current == '=' || current == ':') {
                 std::string op(1, current);
                 pos++;
-                if (current == '!' && input[pos] == '!') { // For !!
+                if (current == '!' && pos < input.length() && input[pos] == '!') { // For !!
                     op += "!";
                     pos++;
                 }
@@ -107,8 +109,7 @@ public:
                 return {TokenType::RightBrace, "}"};
             }
 
-            // Handle class names inside []
-            if (input[pos - 1] == '[') {
+             if (input[pos - 1] == '[') {
                 std::string className;
                 c=0;
                 while (pos < input.length() && input[pos] != ']') {
@@ -165,10 +166,13 @@ public:
                     pos=pos-c-1;
                 }
             }
-
-            // If unknown character, move on
-            std::cerr << "Unknown character: " << current << std::endl;
-            pos++;
+            else
+            {
+                // If unknown character, log error
+               // logError("Unknown character: " + std::string(1, current));
+                pos++;
+                return {TokenType::LexerError, "Unknown character: " + std::string(1, current)};
+            }
         }
         return {TokenType::EndOfFile, ""};
     }
@@ -176,6 +180,17 @@ public:
 private:
     std::string input;
     size_t pos;
+
+    void logError(const std::string& message) {
+        std::ofstream errorFile("output.txt", std::ios::app);
+        if (errorFile.is_open()) {
+            errorFile << "Error: " << message << std::endl;
+            //return {TokenType::LexerError, message};
+            errorFile.close();
+        } else {
+            cerr << "Error: Could not open output file for logging errors." << endl;
+        }
+    }
 };
 
 int main(int argc, char* argv[]) {
@@ -186,8 +201,15 @@ int main(int argc, char* argv[]) {
 
     string input = readFile(argv[1]);
 
-    // Now input contains the entire content of the file
-    cout << "Input read from file:\n" << input << endl;
+    // Clear previous output
+    ofstream outputFile("output.txt");
+    outputFile.close(); // Just to clear the file initially
+
+    outputFile.open("output.txt", ios::app);
+    if (!outputFile.is_open()) {
+        cerr << "Error: Could not open output file." << endl;
+        return 1;
+    }
 
     Lexer lexer(input);
     Token token;
@@ -207,9 +229,11 @@ int main(int argc, char* argv[]) {
             case TokenType::Text: type = "Text"; break;
             case TokenType::Header: type = "Header"; break;
             case TokenType::EndOfFile: type = "EndOfFile"; break;
+            case TokenType::LexerError: type = "LexerError"; break;
         }
-        std::cout << "<" << type << ", " << token.value << ">" << std::endl;
+        outputFile << "<" << type << ", " << token.value << ">" << std::endl;
     } while (token.type != TokenType::EndOfFile);
 
+    outputFile.close();
     return 0;
 }

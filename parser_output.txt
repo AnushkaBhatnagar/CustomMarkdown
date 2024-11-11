@@ -1,0 +1,2 @@
+Syntax error: Unexpected token: [ at position 0
+Parsing failed due to syntax errors.

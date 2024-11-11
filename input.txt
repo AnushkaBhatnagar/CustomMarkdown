@@ -1,2 +1,1 @@
-@div
-["container-fluid"]
+["container-fluid"]{width="300px"} "Hello World"
