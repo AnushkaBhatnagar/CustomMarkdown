@@ -74,6 +74,10 @@ The designed lexical analyser is using **Panic Mode** as a mechanism for error h
 
 Error Recovery entails skipping ahead to the next character and continuing parsing the input as per the rules of the designed language.
 
+## Sample Execution
+
+Sample inputs and outputs obtained from the lexical analyzer are described in [@this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Lexer.md)
+
 # Phase 2: Syntax Parser
 **Context Free Grammar:**
 
@@ -126,4 +130,4 @@ The parser handles errors through a dedicated mechanism that captures unexpected
 
 ## Sample Execution
 
-Sample inputs and outputs obtained from the syntax parser are described in this link
+Sample inputs and outputs obtained from the syntax parser are described in [@this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Parser.md)
