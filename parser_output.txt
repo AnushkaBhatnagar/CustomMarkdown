@@ -1,2 +1,10 @@
-Syntax error: Unexpected token: [ at position 0
-Parsing failed due to syntax errors.
+Document: 
+  Header: ##
+    Text: This is Title!
+  Tag: div
+    Lbracket: [
+    ClassName: "container-fluid dark"
+    Rbracket: ]
+    LeftBrace: {
+    Attribute: color:black height=90px
+    RightBrace: }
