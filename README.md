@@ -5,9 +5,50 @@ This is a compiler project to translate a Custom Markdown language to its HTML a
 Different Phases Implemented:
 - [Lexical Analyser](#phase-1---lexical-analyser)
 - [Syntax Parser](#phase-2---syntax-parser)
-- [Code Generation](#phase-3--code-generation)
+- [Code Generation](#phase-3---code-generation)
 
 Project By: Anushka Bhatnagar (UNI: ab5920)
+
+# Execution (Running All Stages)
+
+## Installation and Set Up
+
+1. Clone the Repository
+   ```
+   git clone https://github.com/AnushkaBhatnagar/CustomMarkdown
+   ```
+2. Navigate to the project folder
+   ```
+   cd CustomMarkdown
+   ```
+4. Install g++
+   - On Ubuntu/Debian
+     ```
+     sudo apt update
+     sudo apt install g++
+     ```
+   - On macOS
+     ```
+     xcode-select --install
+     ```
+5. Make the Shell Script Executable
+   ```
+   chmod +x run_lexer.sh
+   ```
+
+## Running the Compiler
+
+An input.txt file is present with sample code. The compiler can be run using the Shell Script as follows:
+
+  ```
+  ./run_compiler.sh
+  ```
+
+The output obtained from the compiler gets stored in output.html
+
+# Detailed Description of Different Phases
+
+The description below explains each phase of this compiler in detail. Though the compiler in its entirety can be run using the code above, code for running each phase individually is also present below.
 
 # Phase 1 - Lexical Analyser
 **Lexical Grammar Rules:**
@@ -37,31 +78,6 @@ The Lexical Grammar for the language consists of the following token classes:
 | Rbracket  | Right Bracket for Class Names    | `]`   |
 | LBrace | Left Brace for Attributes    | `{`   |
 | RBrace  |  Right Brace for Attributes    | `}`   |
-
-## Installation and Set Up
-
-1. Clone the Repository
-   ```
-   git clone https://github.com/AnushkaBhatnagar/CustomMarkdown
-   ```
-2. Navigate to the project folder
-   ```
-   cd CustomMarkdown
-   ```
-4. Install g++
-   - On Ubuntu/Debian
-     ```
-     sudo apt update
-     sudo apt install g++
-     ```
-   - On macOS
-     ```
-     xcode-select --install
-     ```
-5. Make the Shell Script Executable
-   ```
-   chmod +x run_lexer.sh
-   ```
 
 ## Running the Lexical Analyser
 
@@ -121,10 +137,10 @@ Sample inputs and outputs obtained from the lexical analyzer are described in [t
 
 ## Running the Syntax Parser
 
-The syntax parser takes its input from the output.txt file, which contains the output obtained from the lexer. Thus, after running the lexer as described in the steps above, the syntax parser can be run using the following Shell Script:
+The syntax parser takes its input from the output.txt file, which contains the output obtained from the lexer. If running individually, after running the lexer as described in the steps above, the syntax parser can be run using the following Shell Script:
 
   ```
-  ./parser
+  ./run_parser.sh
   ```
 
 The output from the parser gets stored in parser_output.txt
@@ -140,3 +156,28 @@ Sample inputs and outputs obtained from the syntax parser are described in [this
 The demo video demonstraring the working of the syntax parser can be found [here](https://drive.google.com/file/d/1WPGqp0m2cf6LVfs_6w3EoB3QuYQ8kHGk/view?usp=sharing) (can be accessed through Columbia Mail ID)
 
 # Phase 3 - Code Generation
+
+The Code Generation Phase takes the AST generated from the Parsing Phase as input, and generates its corresponding HTML and Bootstrap CSS equivalent in the output.html file as the final code.
+
+
+## Running the Syntax Parser
+
+If running individually, this phase can be executed after syntax analyis as described in the steps above. This phase can be run using the following Shell Script:
+
+  ```
+  ./run_codegen.sh
+  ```
+
+The final code generated gets stored in output.html
+
+## Error Handling
+
+This phase does not execute in case there were errors detected in either of the two earlier phases. The respective error gets logged and the corresponding stage is indicated in display along with the error encountered. 
+
+The parser handles errors through a dedicated mechanism that captures unexpected token sequences and reports syntax errors. When the parser encounters a token that does not conform to the expected syntax—such as missing elements or incorrectly structured tokens—it calls the syntaxError function, which logs an error message along with the position of the error in the input. This allows for easier debugging by indicating precisely where the parsing process failed. Additionally, the parser continues to process subsequent tokens after encountering an error, enabling it to identify multiple errors in a single parsing attempt.
+
+## Sample Execution
+
+Sample inputs and outputs obtained from the syntax parser are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Code%20Generation.md)
+
+The demo video demonstraring the working of the syntax parser can be found [here](https://drive.google.com/file/d/1WPGqp0m2cf6LVfs_6w3EoB3QuYQ8kHGk/view?usp=sharing) (can be accessed through Columbia Mail ID)
