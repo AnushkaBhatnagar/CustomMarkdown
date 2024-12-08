@@ -1,10 +1,27 @@
-Document: 
-  Header: ##
-    Text: This is Title!
-  Tag: div
-    Lbracket: [
-    ClassName: "container-fluid dark"
-    Rbracket: ]
-    LeftBrace: {
-    Attribute: color:black height=90px
-    RightBrace: }
+{Document, 
+  {Header, ##
+    {Text, This is Title!
+
+    }
+  },
+  {Tag, div
+    {Lbracket, [
+
+    },
+    {ClassName, "container-fluid dark"
+
+    },
+    {Rbracket, ]
+
+    },
+    {LeftBrace, {
+
+    },
+    {Attribute, color:black height=90px
+
+    },
+    {RightBrace, }
+
+    }
+  }
+}

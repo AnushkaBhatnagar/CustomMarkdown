@@ -5,7 +5,7 @@
 #include <cctype>
 
 using namespace std;
-
+int y=0;
 enum class TokenType {
     Operator,
     Tag,
@@ -171,6 +171,7 @@ public:
                 // If unknown character, log error
                // logError("Unknown character: " + std::string(1, current));
                 pos++;
+                y=1;
                 return {TokenType::LexerError, "Unknown character: " + std::string(1, current)};
             }
         }
@@ -184,6 +185,7 @@ private:
     void logError(const std::string& message) {
         std::ofstream errorFile("output.txt", std::ios::app);
         if (errorFile.is_open()) {
+            y=1;
             errorFile << "Error: " << message << std::endl;
             //return {TokenType::LexerError, message};
             errorFile.close();
@@ -196,6 +198,7 @@ private:
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         cerr << "Usage: " << argv[0] << " <input_file>" << endl;
+        cerr << "Example: " << argc << " input.txt" << endl;
         return 1;
     }
 
@@ -233,6 +236,10 @@ int main(int argc, char* argv[]) {
         }
         outputFile << "<" << type << ", " << token.value << ">" << std::endl;
     } while (token.type != TokenType::EndOfFile);
+    if(y==1)
+    {
+        return 1;
+    }
 
     outputFile.close();
     return 0;

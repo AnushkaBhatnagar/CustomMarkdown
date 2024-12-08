@@ -5,7 +5,8 @@
 #include <string>
 
 using namespace std;
-int x=0;
+int x = 0;
+
 // Token types based on your grammar
 enum class TokenType {
     Operator, Tag, ClassName, Attribute, Lbracket, Rbracket,
@@ -46,6 +47,19 @@ struct ASTNode {
         for (auto child : children) {
             delete child;
         }
+    }
+
+    // Function to generate AST output in the desired format
+    string toString(int depth = 0) {
+        stringstream ss;
+        string indent(depth, ' '); // Add spaces for indentation
+        ss << indent << "{" << type << ", " << value << "\n";
+        for (size_t i = 0; i < children.size(); ++i) {
+            if (i > 0) ss << ",\n";
+            ss << children[i]->toString(depth + 2); // Increase depth for children
+        }
+        ss << "\n" << indent << "}";
+        return ss.str();
     }
 };
 
@@ -90,17 +104,15 @@ vector<Token> readTokens(const string &filename) {
 // Parser class
 class Parser {
 public:
-    explicit Parser(const vector<Token> &tokens, ofstream &errorOutput) 
-        : tokens(tokens), pos(0), errorOutput(errorOutput) {}
+    explicit Parser(const vector<Token> &tokens, ofstream &outputFile) 
+        : tokens(tokens), pos(0), outputFile(outputFile) {}
 
     ASTNode* parse() {
         if (TokenType::LexerError == currentToken().type) {
-              //errorOutput << "Parsing cannot be done due to lexer errors." << endl;
-             return nullptr;
+            return nullptr;
         }
         ASTNode* root = new ASTNode("Document", "");
         while (currentToken().type != TokenType::EndOfFile && currentToken().type != TokenType::LexerError) { 
-            //errorOutput<< "Parsing token: " << currentToken().type << "and" << currentToken().value << endl;
             if (isHeader()) {
                 root->children.push_back(parseHeader());
             } else if (isTag()) {
@@ -108,20 +120,16 @@ public:
             } else if (isAlert()) {
                 root->children.push_back(parseAlert());
             } else if (currentToken().type == TokenType::Text) {
-            // Handle standalone text
                 root->children.push_back(new ASTNode("Text", currentToken().value));
                 advance();
-            } //else if (currentToken().type == TokenType::LexerError) {
-               // errorOutput << "Parsing cannot be done due to lexer errors." << endl;
-                //return nullptr;}
-             else {
+            } else {
                 syntaxError("Unexpected token: " + currentToken().value);
                 return nullptr;
             }
         }
         if(currentToken().type == TokenType::LexerError)
         {
-            root=nullptr;
+            root = nullptr;
             return nullptr;
         }
         return root;
@@ -130,7 +138,7 @@ public:
 private:
     vector<Token> tokens;
     size_t pos;
-    ofstream &errorOutput;
+    ofstream &outputFile;
 
     Token currentToken() {
         return tokens[pos];
@@ -151,15 +159,6 @@ private:
     bool isAlert() {
         return currentToken().type == TokenType::Operator && currentToken().value == "!!";
     }
-
-    // bool containsLexerErrors() {
-    //     for (const Token& token : tokens) {
-    //         if (curre) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
 
     ASTNode* parseHeader() {
         Token token = currentToken();
@@ -202,18 +201,16 @@ private:
         if (currentToken().type == TokenType::LeftBrace) {
             tagNode->children.push_back(new ASTNode("LeftBrace", "{"));
             advance();
-            if (currentToken().type == TokenType::Attribute) {
+            while (currentToken().type == TokenType::Attribute) {
                 ASTNode* attributeNode = new ASTNode("Attribute", currentToken().value);
                 tagNode->children.push_back(attributeNode); // Indented child
                 advance();
-                if (currentToken().type == TokenType::RightBrace) {
-                    tagNode->children.push_back(new ASTNode("RightBrace", "}"));
-                    advance();
-                } else {
-                    syntaxError("Expected closing brace }");
-                }
+            }
+            if (currentToken().type == TokenType::RightBrace) {
+                tagNode->children.push_back(new ASTNode("RightBrace", "}"));
+                advance();
             } else {
-                syntaxError("Expected attribute inside braces");
+                syntaxError("Expected closing brace }");
             }
         }
 
@@ -233,23 +230,18 @@ private:
     }
 
     void syntaxError(const string &message) {
-        x=1;
-        errorOutput << "Syntax error: " << message << " at position " << pos << endl;
+        x = 1;
+        outputFile << "Syntax error: " << message << " at position " << pos << endl;
     }
 };
 
-// Function to write the AST to a file in a tree structure
-void writeAST(ASTNode* node, ofstream &file, int indent = 0) {
-    if(node==nullptr)
-    {
+// Function to write the AST to a file in the desired format
+void writeAST(ASTNode* node, ofstream &file) {
+    if(node == nullptr) {
         file << "Parsing failed due to lexer errors." << endl;
+        return;
     }
-    for (int i = 0; i < indent; ++i) file << "  ";
-    file << node->type << ": " << node->value << endl;
-
-    for (auto child : node->children) {
-        writeAST(child, file, indent + 1);
-    }
+    file << node->toString()<< endl;
 }
 
 int main() {
@@ -264,18 +256,16 @@ int main() {
     Parser parser(tokens, outputFile);
 
     ASTNode* ast = parser.parse();
-    if(ast==nullptr)
-    {
+    if(ast == nullptr) {
         outputFile << "Parsing failed due to lexer errors." << endl;
-        writeAST(ast, outputFile);
-    }
-    if (ast) {
-        if (x==0)
-            writeAST(ast, outputFile);
-        else
-            outputFile << "Parsing failed due to syntax errors." << endl;
+        return 1;
     } else {
-        outputFile << "Parsing failed due to syntax errors." << endl;
+        if (x == 0)
+            writeAST(ast, outputFile);
+        else{
+            outputFile << "Parsing failed due to syntax errors." << endl;
+            return 1;
+        }
     }
 
     outputFile.close();
