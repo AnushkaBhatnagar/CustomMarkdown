@@ -52,6 +52,8 @@ The output obtained from the compiler gets stored in output.html
 
 Sample inputs and outputs obtained from the compiler are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Code%20Generation.md)
 
+The demo video demonstraring the working of the final compiler can be found [here](https://drive.google.com/file/d/1Z7VMz0Kn-tbQEh6Y0OAagGR9y3yvzoTJ/view?usp=sharing) (can be accessed through Columbia Mail ID)
+
 # Detailed Description of Different Phases
 
 The description below explains each phase of this compiler in detail. Though the compiler in its entirety can be run using the code above, code for running each phase individually is also present below.
