@@ -9,7 +9,9 @@ Different Phases Implemented:
 
 Project By: Anushka Bhatnagar (UNI: ab5920)
 
-# Execution (Running All Stages)
+# Execution
+
+The below steps can be followed to run all phases together:
 
 ## Installation and Set Up
 
@@ -45,6 +47,10 @@ An input.txt file is present with sample code. The compiler can be run using the
   ```
 
 The output obtained from the compiler gets stored in output.html
+
+# Sample Inputs and Outputs
+
+Sample inputs and outputs obtained from the compiler are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Code%20Generation.md)
 
 # Detailed Description of Different Phases
 
@@ -159,25 +165,22 @@ The demo video demonstraring the working of the syntax parser can be found [here
 
 The Code Generation Phase takes the AST generated from the Parsing Phase as input, and generates its corresponding HTML and Bootstrap CSS equivalent in the output.html file as the final code.
 
-
-## Running the Syntax Parser
+## Running Code Generation
 
 If running individually, this phase can be executed after syntax analyis as described in the steps above. This phase can be run using the following Shell Script:
 
   ```
   ./run_codegen.sh
   ```
-
-The final code generated gets stored in output.html
+The output specific to the code generation phase (such as displaying the nodes created after parsing the AST obtained from the step above) are logged in log.txt.
+The final HTML and Bootstrap CSS code generated gets stored in output.html.
 
 ## Error Handling
 
-This phase does not execute in case there were errors detected in either of the two earlier phases. The respective error gets logged and the corresponding stage is indicated in display along with the error encountered. 
-
-The parser handles errors through a dedicated mechanism that captures unexpected token sequences and reports syntax errors. When the parser encounters a token that does not conform to the expected syntax—such as missing elements or incorrectly structured tokens—it calls the syntaxError function, which logs an error message along with the position of the error in the input. This allows for easier debugging by indicating precisely where the parsing process failed. Additionally, the parser continues to process subsequent tokens after encountering an error, enabling it to identify multiple errors in a single parsing attempt.
+The code generation phase checks for any errors during compilation and displays the same. This phase does not execute in case there were errors detected in either of the two earlier phases. The respective error gets logged and the corresponding stage is indicated in display along with the error encountered. 
 
 ## Sample Execution
 
-Sample inputs and outputs obtained from the syntax parser are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Code%20Generation.md)
+Sample inputs and outputs obtained from the code generation phase (the final compiler) are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Code%20Generation.md)
 
-The demo video demonstraring the working of the syntax parser can be found [here](https://drive.google.com/file/d/1WPGqp0m2cf6LVfs_6w3EoB3QuYQ8kHGk/view?usp=sharing) (can be accessed through Columbia Mail ID)
+The demo video demonstraring the working of the final compiler can be found [here](https://drive.google.com/file/d/1Z7VMz0Kn-tbQEh6Y0OAagGR9y3yvzoTJ/view?usp=sharing) (can be accessed through Columbia Mail ID)
