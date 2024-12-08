@@ -1,10 +1,11 @@
 # CustomMarkdown
 
-This is a compiler project to translate a Custom Markdown language to its HTML and Bootstrap CSS equivalent. The compiler has been designed in C++.
+This is a compiler project to translate a Custom Markdown language to its HTML and Bootstrap CSS (v5.3.3) equivalent. The compiler has been designed in C++.
 
 Different Phases Implemented:
 - [Lexical Analyser](#phase-1---lexical-analyser)
 - [Syntax Parser](#phase-2---syntax-parser)
+- [Code Generation](#phase-3--code-generation)
 
 Project By: Anushka Bhatnagar (UNI: ab5920)
 
@@ -137,3 +138,5 @@ The parser handles errors through a dedicated mechanism that captures unexpected
 Sample inputs and outputs obtained from the syntax parser are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Parser.md)
 
 The demo video demonstraring the working of the syntax parser can be found [here](https://drive.google.com/file/d/1WPGqp0m2cf6LVfs_6w3EoB3QuYQ8kHGk/view?usp=sharing) (can be accessed through Columbia Mail ID)
+
+# Phase 3 - Code Generation
