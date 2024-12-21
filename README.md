@@ -6,6 +6,7 @@ Different Phases Implemented:
 - [Lexical Analyser](#phase-1---lexical-analyser)
 - [Syntax Parser](#phase-2---syntax-parser)
 - [Code Generation](#phase-3---code-generation)
+- [Optimization](#phase-4---optimization)
 
 Project By: Anushka Bhatnagar (UNI: ab5920)
 
@@ -184,5 +185,27 @@ The code generation phase checks for any errors during compilation and displays 
 ## Sample Execution
 
 Sample inputs and outputs obtained from the code generation phase (the final compiler) are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Code%20Generation.md)
+
+The demo video demonstraring the working of the final compiler can be found [here](https://drive.google.com/file/d/1Z7VMz0Kn-tbQEh6Y0OAagGR9y3yvzoTJ/view?usp=sharing) (can be accessed through Columbia Mail ID)
+
+# Phase 4 - Optimization
+
+## Optimizations Made
+
+### 3 optimizations in lexer.cpp:
+
+1. To reduce redundant file operations, instead of opening the file twice (once to clear and once to append), we are now using a single ofstream to check if it's open at the beginning.
+2. Instead of using std::string and repeatedly adding characters, we have now initialized std::string with an expected size to avoid potential reallocations.
+3. For cases like className and attribute parsing, we have reduced repetitive code by combining if conditions with while loops to make them more concise.
+
+### 1 optimization while running the compiler:
+
+4. We are now using -s in `if [ ! -s "filename" ]` for a more concise check to verify whether the file exists and is non-empty in a single check, instead of running multiple statements.
+
+These optimizations now remove unnecessary variable declarations, minimize redundant checks, and improve error handling efficiency. The logic for handling attributes and class names inside brackets and braces has been streamlined. The tokenization process now avoids unnecessary string concatenations and minimizes the scope of error handling, improving performance. Additionally, file operations and memory management are more efficient, ensuring quicker execution and fewer resources consumed.
+
+## Sample Execution
+
+Sample inputs and outputs obtained from optimization remain the same, as the optimization steps make the code more efficient without interfering in or modifying the functionalities or working of the final compiler. They are described in [this link](https://github.com/AnushkaBhatnagar/CustomMarkdown/blob/main/Sample%20Inputs%20and%20Outputs/Code%20Generation.md)
 
 The demo video demonstraring the working of the final compiler can be found [here](https://drive.google.com/file/d/1Z7VMz0Kn-tbQEh6Y0OAagGR9y3yvzoTJ/view?usp=sharing) (can be accessed through Columbia Mail ID)
