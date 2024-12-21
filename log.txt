@@ -1,0 +1,11 @@
+Starting AST Parsing...
+Processing line: {Document,
+Created root node: Document
+Created node: Type = Header, Value = ##
+Created node: Type = Text, Value = This is Title!
+Created node: Type = Tag, Value =  div
+Created node: Type = ClassName, Value =  "container-fluid dark"
+Created node: Type = Attribute, Value =  color:black height=90px
+Header type is ##
+Error: Unexpected node type: Text
+HTML generation completed successfully.

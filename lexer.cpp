@@ -43,7 +43,7 @@ public:
     explicit Lexer(const std::string &input) : input(input), pos(0) {}
 
     Token nextToken() {
-        int c=0;
+        int c = 0;
         while (pos < input.length()) {
             char current = input[pos];
 
@@ -109,40 +109,33 @@ public:
                 return {TokenType::RightBrace, "}"};
             }
 
-             if (input[pos - 1] == '[') {
+            // Handle className inside []
+            if (input[pos - 1] == '[') {
                 std::string className;
-                c=0;
+                c = 0;
                 while (pos < input.length() && input[pos] != ']') {
                     className += input[pos++];
                     c++;
                 }
-                if(input[pos] == ']')
-                {
+                if (input[pos] == ']') {
                     return {TokenType::ClassName, className};
-                }
-                else
-                {
-                    className="";
-                    pos=pos-c;
+                } else {
+                    pos -= c; // Reset position in case of error
                 }
             }
 
-            // Handle attributes inside {}
+            // Handle attribute inside {}
             if (input[pos - 1] == '{') {
                 std::string attribute;
-                c=0;
+                c = 0;
                 while (pos < input.length() && input[pos] != '}') {
                     attribute += input[pos++];
                     c++;
                 }
-                if(input[pos] == '}')
-                {
+                if (input[pos] == '}') {
                     return {TokenType::Attribute, attribute};
-                }
-                else
-                {
-                    attribute="";
-                    pos=pos-c;
+                } else {
+                    pos -= c; // Reset position in case of error
                 }
             }
 
@@ -150,30 +143,22 @@ public:
             if (current == '"') {
                 pos++;
                 std::string text;
-                c=0;
+                c = 0;
                 while (pos < input.length() && input[pos] != '"') {
                     text += input[pos++];
                     c++;
                 }
-                if(input[pos] == '"')
-                {
+                if (input[pos] == '"') {
                     pos++; // Skip closing "
                     return {TokenType::Text, text};
-                }
-                else
-                {
-                    text="";
-                    pos=pos-c-1;
+                } else {
+                    pos -= c - 1; // Reset position in case of error
                 }
             }
-            else
-            {
-                // If unknown character, log error
-               // logError("Unknown character: " + std::string(1, current));
-                pos++;
-                y=1;
-                return {TokenType::LexerError, "Unknown character: " + std::string(1, current)};
-            }
+
+            // Unknown character
+            pos++;
+            return {TokenType::LexerError, "Unknown character: " + std::string(1, current)};
         }
         return {TokenType::EndOfFile, ""};
     }
@@ -185,10 +170,8 @@ private:
     void logError(const std::string& message) {
         std::ofstream errorFile("output.txt", std::ios::app);
         if (errorFile.is_open()) {
-            y=1;
+            y = 1;
             errorFile << "Error: " << message << std::endl;
-            //return {TokenType::LexerError, message};
-            errorFile.close();
         } else {
             cerr << "Error: Could not open output file for logging errors." << endl;
         }
@@ -198,17 +181,13 @@ private:
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         cerr << "Usage: " << argv[0] << " <input_file>" << endl;
-        cerr << "Example: " << argc << " input.txt" << endl;
         return 1;
     }
 
     string input = readFile(argv[1]);
 
     // Clear previous output
-    ofstream outputFile("output.txt");
-    outputFile.close(); // Just to clear the file initially
-
-    outputFile.open("output.txt", ios::app);
+    ofstream outputFile("output.txt", ios::trunc); // Clear file using trunc mode
     if (!outputFile.is_open()) {
         cerr << "Error: Could not open output file." << endl;
         return 1;
@@ -236,11 +215,10 @@ int main(int argc, char* argv[]) {
         }
         outputFile << "<" << type << ", " << token.value << ">" << std::endl;
     } while (token.type != TokenType::EndOfFile);
-    if(y==1)
-    {
+
+    if (y == 1) {
         return 1;
     }
 
-    outputFile.close();
     return 0;
 }
